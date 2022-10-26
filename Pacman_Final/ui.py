@@ -1,9 +1,9 @@
-
+# Sprites
 ui_wall = [
-    "......",
-    "......",
-    "......",
-    "......"
+    "######",
+    "######",
+    "######",
+    "######"
 ]
 
 ui_ghost = [
@@ -34,7 +34,7 @@ ui_empty = [
     "      "
 ]
 
-ui_pill = [
+ui_apple = [
     "      ",
     " .--. ",
     " '--' ",
@@ -62,9 +62,73 @@ ui_won = [
     " _II_ "
 ]
 
+# Function that selects the starting map
+def choose_map():
 
-def choose_map(map1,map2,map3,map4):
+    # @ -> our hero
+    # G -> ghosts
+    # P -> pills
+    # C -> cherry
+    # . -> empty spaces
+    # | and - -> walls
 
+    # small
+    map_small = [
+    "|---------|",
+    "|PG.....GP|",
+    "|..|...|..|",
+    "|....@....|",
+    "|..|...|..|",
+    "|PG.....GP|",
+    "|---------|"
+]
+
+# medium
+    map_medium = [
+    "|------------------|",
+    "|PG......GG......GP|",
+    "|G................G|",
+    "|...|P.||..||.P|C..|",
+    "|..||..||..||..||..|",
+    "|........@.........|",
+    "|..................|",
+    "|..||..||..||..||..|",
+    "|..C|P.||..||.P|...|",
+    "|G................G|",
+    "|PG......GG......GP|",
+    "|------------------|"
+]
+
+# large
+    map_large = [
+    "|------------------------------------|",
+    "|G.......G.......P||P.......G.......G|",
+    "|.||P||.||||.||||.||.||||.||||.||P||.|",
+    "|.||P||...........||...........||P||.|",
+    "|.......||C|.|.||.GG.||.|.|C||.......|",
+    "|.||.||.||.|.|.||.||.||.|.|.||.||.||.|",
+    "|@||.||.||........||........||.||.||.|",
+    "|.......||.|||.||.GG.||.|||.||.......|",
+    "|.||P||........C..||..C........||P||.|",
+    "|.||P||.||||.||||.||.||||.||||.||P||.|",
+    "|G.......G.......P||P.......G.......G|",
+    "|------------------------------------|"
+]
+
+# special
+    map_special = [
+    "|----------------------------------|",
+    "|PG......G....G.....@.....G......GP|",
+    "|G................................G|",
+    "|..|||..|||..|||..|||||..|||..|||..|",
+    "|..|G|..|G|..|P...|C|C|..|G|..|C|..|",
+    "|..|||..|||..|C...|P|P|..|||..|P|..|",
+    "|..|C...|P|..|P...|.|.|..|P|..|.|..|",
+    "|..|....|P|..|||..|.|.|..|P|..|.|..|",
+    "|G................................G|",
+    "|PG......G....G.....G.....G......GP|",
+    "|----------------------------------|"
+]
     print("Welcome to Pacman! Please choose your Map-Size:")
     print(" *small* | *medium* | *large* | *special* ")
     map_nr = str(input())
@@ -77,20 +141,21 @@ def choose_map(map1,map2,map3,map4):
         map_nr = str(input())
 
     if map_nr == "small":
-        map = map1
+        map = map_small
         size = 1
     elif map_nr == "medium":
-        map = map2
+        map = map_medium
         size = 2
     elif map_nr == "large":
-        map = map3
+        map = map_large
         size = 3
     elif map_nr == "special":
-        map = map4
+        map = map_special
         size = 3
         
     return map, size
 
+# Function that prints the map
 def ui_print(map,pacman_state):
     for row in map:
         for piece in range(4):
@@ -98,12 +163,12 @@ def ui_print(map,pacman_state):
                 if column == 'G':
                     print(ui_ghost[piece], end='')
                 if column == 'P':
-                    print(ui_pill[piece], end='')
+                    print(ui_apple[piece], end='')
                 if column == 'C':
                     print(ui_cherry[piece], end='')
                 if column == '@':
                     if pacman_state==0:
-                        print(ui_pacman[piece], end='')
+                        print(ui_pacman[piece], end='') # normal pacman
                     elif pacman_state==1:
                         print(ui_dead[piece], end='') # pacman is dead
                     elif pacman_state==2:
@@ -117,7 +182,7 @@ def ui_print(map,pacman_state):
 
             print("")
 
-
+#Function that gets the key-input from the player
 def ui_key():
     key = str(input())
 
@@ -127,6 +192,7 @@ def ui_key():
 
     return key
 
+# Loss Message
 def ui_msg_lost(final_coins, final_ghosts, final_cherry):
     print("---")
     print("Pacman died, You lost!")
@@ -134,7 +200,7 @@ def ui_msg_lost(final_coins, final_ghosts, final_cherry):
     print ("Final Score: " + str(final_score) + " Points")
     print("---")
 
-
+# Win Message
 def ui_msg_win(final_coins, final_ghosts, final_moves, final_cherry):
     print("---")
     print("Congratulations, You won!")
@@ -142,7 +208,7 @@ def ui_msg_win(final_coins, final_ghosts, final_moves, final_cherry):
     print ("Final Score: " + str(final_score) + " Points")
     print("---")
 
-
+# Asks player if he would like to play again
 def play_again():
     print("Do you want to play again? (Y or N)")
     answer = str(input())
